@@ -1,8 +1,8 @@
-FROM amazoncorretto:17
-COPY ./ /app
+FROM amazoncorretto:17-al2023
+RUN mkdir /app
 WORKDIR /app
-RUN apt update \
-&& apt install maven -y --no-install-recommends maven \
-&& mvn clean install
-EXPOSE 8081
-ENTRYPOINT java -jar /app/target/mensagens-0.0.1-SNAPSHOT.jar
+COPY . .
+# ----
+# Install Maven
+RUN dnf install -y maven
+ENTRYPOINT [ "bash", "entrypoint.sh" ]
