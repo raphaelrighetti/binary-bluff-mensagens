@@ -5,4 +5,5 @@ COPY . .
 # ----
 # Install Maven
 RUN dnf install -y maven
+EXPOSE 8081
 ENTRYPOINT [ "bash", "entrypoint.sh" ]
