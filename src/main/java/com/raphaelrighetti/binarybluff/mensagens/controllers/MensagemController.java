@@ -23,7 +23,7 @@ import com.raphaelrighetti.binarybluff.mensagens.services.MensagemService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/mensagens")
+@RequestMapping("/")
 public class MensagemController {
 
 	@Autowired
@@ -33,12 +33,12 @@ public class MensagemController {
 	public ResponseEntity<MensagemLeituraDTO> cadastrar(@RequestBody @Valid MensagemCadastroDTO dto,
 			UriComponentsBuilder uriBuilder) {
 		MensagemLeituraDTO responseDTO = service.cadastrar(dto);
-		URI uri = uriBuilder.path("/mensagens/{id}").buildAndExpand(responseDTO.id()).toUri();
+		URI uri = uriBuilder.path("/{id}").buildAndExpand(responseDTO.id()).toUri();
 		
 		return ResponseEntity.created(uri).body(responseDTO);
 	}
 	
-	@PostMapping("/{id}/adicionar-resposta")
+	@PostMapping("{id}/adicionar-resposta")
 	public ResponseEntity<Void> adicionarResposta(@PathVariable String id,
 			@RequestBody @Valid MensagemAdicionarRespostaDTO dto) {
 		service.adicionarResposta(id, dto.respostaId());
@@ -53,14 +53,14 @@ public class MensagemController {
 		return ResponseEntity.ok(page);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<MensagemLeituraDTO> obterPorId(@PathVariable String id) {
 		MensagemLeituraDTO responseDTO = service.obterDtoPorId(id);
 		
 		return ResponseEntity.ok(responseDTO);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity<Void> deletar(@PathVariable String id) {
 		service.deletar(id);
 		
