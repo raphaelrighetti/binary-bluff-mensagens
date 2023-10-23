@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.raphaelrighetti.binarybluff.mensagens.dto.MensagemAdicionarRespostaDTO;
 import com.raphaelrighetti.binarybluff.mensagens.dto.MensagemCadastroDTO;
 import com.raphaelrighetti.binarybluff.mensagens.dto.MensagemLeituraDTO;
+import com.raphaelrighetti.binarybluff.mensagens.dto.RespostaEscolhidaDTO;
 import com.raphaelrighetti.binarybluff.mensagens.services.MensagemService;
 
 import jakarta.validation.Valid;
@@ -56,6 +57,13 @@ public class MensagemController {
 	@GetMapping("{id}")
 	public ResponseEntity<MensagemLeituraDTO> obterPorId(@PathVariable String id) {
 		MensagemLeituraDTO responseDTO = service.obterDtoPorId(id);
+		
+		return ResponseEntity.ok(responseDTO);
+	}
+	
+	@GetMapping("{id}/resposta")
+	public ResponseEntity<RespostaEscolhidaDTO> escolherResposta(@PathVariable String id) {
+		RespostaEscolhidaDTO responseDTO = service.escolherResposta(id);
 		
 		return ResponseEntity.ok(responseDTO);
 	}

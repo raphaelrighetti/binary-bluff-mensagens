@@ -1,5 +1,8 @@
 package com.raphaelrighetti.binarybluff.mensagens.services;
 
+import java.util.List;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.raphaelrighetti.binarybluff.mensagens.dto.MensagemCadastroDTO;
 import com.raphaelrighetti.binarybluff.mensagens.dto.MensagemLeituraDTO;
+import com.raphaelrighetti.binarybluff.mensagens.dto.RespostaEscolhidaDTO;
 import com.raphaelrighetti.binarybluff.mensagens.exceptions.ArgumentoInvalidoException;
 import com.raphaelrighetti.binarybluff.mensagens.exceptions.MensagemNaoEncontradaException;
 import com.raphaelrighetti.binarybluff.mensagens.models.Mensagem;
@@ -59,6 +63,24 @@ public class MensagemService {
 	
 	public MensagemLeituraDTO obterDtoPorMensagem(String mensagem) {
 		return new MensagemLeituraDTO(obterPorMensagem(mensagem));
+	}
+	
+	public RespostaEscolhidaDTO escolherResposta(String mensagemId) {
+		Mensagem mensagem = obterPorId(mensagemId);
+		
+		if (!mensagem.getRespondida()) {
+			return new RespostaEscolhidaDTO(mensagem.getId(), mensagem.getMensagem());
+		}
+		
+		List<String> respostas = mensagem.getRespostas()
+			.stream()
+			.map(Mensagem::getMensagem)
+			.toList();
+		
+		Random random = new Random();
+		int respostaEscolhidaIndex = random.nextInt(respostas.size());
+		
+		return new RespostaEscolhidaDTO(mensagem.getId(), respostas.get(respostaEscolhidaIndex));
 	}
 	
 	public void adicionarResposta(String mensagemId, String respostaId) {
